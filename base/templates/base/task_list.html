@@ -1,0 +1,35 @@
+{% extends 'base/main.html' %} {% block content %}
+
+<div class="header-bar">
+    <div>
+        <h1>To-do List</h1>
+        <h4 style="margin:0">You have <i>{{count}}</i> incomplete task{{ count|pluralize:"s" }}</h3>
+        <a href="{% url 'createtasklink' %}">Create Task</a>
+    </div>
+</div>
+
+
+<div id="tasklist" class="task-items-wrapper">
+    {% for task in tasklist %}
+    <div class="task-wrapper" data-position="{{task.pk}}">
+        <div class="task-title">
+            {% if task.complete %}
+            <div class="task-complete-icon"></div>
+            <i><s><a href="{% url 'updatetasklink' task.id %}">{{task}}</a></s></i> {% else %}
+            <div class="task-incomplete-icon"></div>
+            <a href="{% url 'updatetasklink' task.id %}">{{task}}</a> {% endif %}
+        </div>
+        <div class="task-controls">
+            <a class="delete-link" href="{% url 'deletetasklink' task.id %}">&#215;</a>
+        </div>
+    </div>
+
+    {% empty %}
+    <div style="text-align: center; padding-bottom: 10px; line-height: 1em;">
+        <h3>No tasks to display.</h3>
+        <h3>Create a <a style="text-decoration: none; color: #e53935;" href="{% url 'createtasklink' %}">New task</a> ! </h3>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
